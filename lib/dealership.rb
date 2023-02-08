@@ -43,6 +43,30 @@ class Dealership
   def details
     self.total_value
     details_hash = {"total_value" => @total_value, "address" => @address}
-    require 'pry'; binding.pry
+  end
+
+  def average_price_of_car
+    total = self.total_value
+    average = total / @inventory.length()
+    average = average.to_s
+    #add commas to number
+    average.reverse.scan(/\d{3}|.+/).join(",").reverse
+  end
+
+  def cars_sorted_by_price
+    sorted = @inventory.sort_by{|car| car.total_cost}
+    sorted
+  end
+
+  def inventory_hash
+    makes_hash = Hash.new
+    makes_array = []
+    @inventory.each{|car|makes_array << car.make}
+    uniq_makes = makes_array.uniq
+    uniq_makes.each{|make|makes_hash[make]=[]}
+    @inventory.each do |car|
+      makes_hash[car.make] << car
+    end
+    makes_hash
   end
 end
